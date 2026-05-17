@@ -12,13 +12,11 @@ public class DijkstraSearch<V> extends Search<V> {
     }
 
     private void dijkstra(WeightedGraph<V> graph, Vertex<V> start) {
-        // Initialize all distances to infinity
         for (Vertex<V> v : graph.getVertices().keySet()) {
             distTo.put(v, Double.MAX_VALUE);
         }
         distTo.put(start, 0.0);
 
-        // Min-heap: (distance, vertex)
         PriorityQueue<Vertex<V>> pq = new PriorityQueue<>(
                 (a, b) -> Double.compare(distTo.get(a), distTo.get(b))
         );

@@ -19,7 +19,6 @@ public class WeightedGraph<V> {
     }
 
     public void addEdge(Vertex<V> source, Vertex<V> dest, double weight) {
-        // Make sure both vertices are in the graph
         vertices.put(source, true);
         vertices.put(dest, true);
 

@@ -167,14 +167,12 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        // --- Create vertices ---
         Vertex<String> almaty    = new Vertex<>("Almaty");
         Vertex<String> astana    = new Vertex<>("Astana");
         Vertex<String> shymkent = new Vertex<>("Shymkent");
         Vertex<String> aktobe   = new Vertex<>("Aktobe");
         Vertex<String> atyrau   = new Vertex<>("Atyrau");
 
-        // --- Build weighted undirected graph ---
         WeightedGraph<String> graph = new WeightedGraph<>(true);
 
         graph.addEdge(almaty,    astana,    1200.0);
@@ -184,8 +182,7 @@ public class Main {
         graph.addEdge(aktobe,    atyrau,     600.0);
         graph.addEdge(atyrau,    astana,    1800.0);
 
-        // ========== BFS ==========
-        System.out.println("=== BFS from Almaty ===");
+        System.out.println("BFS from Almaty");
         BreadthFirstSearch<String> bfs = new BreadthFirstSearch<>(graph, almaty);
 
         List<Vertex<String>> bfsPath = bfs.pathTo(atyrau);
@@ -199,7 +196,6 @@ public class Main {
             System.out.println("No path found.");
         }
 
-        // ========== Dijkstra ==========
         System.out.println("\n=== Dijkstra from Almaty ===");
         DijkstraSearch<String> dijkstra = new DijkstraSearch<>(graph, almaty);
 
@@ -215,8 +211,7 @@ public class Main {
             System.out.println("No path found.");
         }
 
-        // Check path to all vertices
-        System.out.println("\n--- Distances from Almaty (Dijkstra) ---");
+        System.out.println("\nDistances from Almaty (Dijkstra)");
         for (Vertex<String> v : graph.getVertices().keySet()) {
             double dist = dijkstra.distanceTo(v);
             System.out.println(v + ": " + (dist == Double.MAX_VALUE ? "unreachable" : dist + " km"));
