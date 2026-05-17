@@ -1,7 +1,7 @@
-public class Main {
-
-    public static void main(String[] args) {
-
+//public class Main {
+//
+//    public static void main(String[] args) {
+//
 //        // MyArrayList
 //        MyArrayList<Integer> list = new MyArrayList<>();
 //
@@ -129,31 +129,97 @@ public class Main {
 //        while (!heap.isEmpty()) {
 //            System.out.println(heap.remove());
 //        }
+//
+//
+//
+//
+//
+//
+//        // Hash Table
+//        System.out.println("MyHashTable TEST :");
+//
+//        MyHashTable<MyTestingClass, Integer> table = new MyHashTable<>();
+//
+//        for (int i = 0; i < 10000; i++) {
+//            table.put(new MyTestingClass(i, "name" + i), i);
+//        }
+//
+//        System.out.println("Inserted 10000 elements");
+//
+//        // test get
+//        MyTestingClass testKey = new MyTestingClass(5, "name5");
+//        System.out.println("Get test value: " + table.get(testKey));
+//
+//        System.out.println("Contains value 5: " + table.contains(5));
+//
+//        System.out.println("GetKey test: " + table.getKey(5));
+//
+//
+//    }
+//}
 
 
 
+// Assignment 4 graphs
 
+import java.util.List;
 
+public class Main {
+    public static void main(String[] args) {
 
-        // Hash Table
-        System.out.println("MyHashTable TEST :");
+        // --- Create vertices ---
+        Vertex<String> almaty    = new Vertex<>("Almaty");
+        Vertex<String> astana    = new Vertex<>("Astana");
+        Vertex<String> shymkent = new Vertex<>("Shymkent");
+        Vertex<String> aktobe   = new Vertex<>("Aktobe");
+        Vertex<String> atyrau   = new Vertex<>("Atyrau");
 
-        MyHashTable<MyTestingClass, Integer> table = new MyHashTable<>();
+        // --- Build weighted undirected graph ---
+        WeightedGraph<String> graph = new WeightedGraph<>(true);
 
-        for (int i = 0; i < 10000; i++) {
-            table.put(new MyTestingClass(i, "name" + i), i);
+        graph.addEdge(almaty,    astana,    1200.0);
+        graph.addEdge(almaty,    shymkent,   700.0);
+        graph.addEdge(astana,    aktobe,     900.0);
+        graph.addEdge(shymkent,  aktobe,    1500.0);
+        graph.addEdge(aktobe,    atyrau,     600.0);
+        graph.addEdge(atyrau,    astana,    1800.0);
+
+        // ========== BFS ==========
+        System.out.println("=== BFS from Almaty ===");
+        BreadthFirstSearch<String> bfs = new BreadthFirstSearch<>(graph, almaty);
+
+        List<Vertex<String>> bfsPath = bfs.pathTo(atyrau);
+        if (bfsPath != null) {
+            System.out.print("Path to Atyrau: ");
+            for (Vertex<String> v : bfsPath) {
+                System.out.print(v + " ");
+            }
+            System.out.println();
+        } else {
+            System.out.println("No path found.");
         }
 
-        System.out.println("Inserted 10000 elements");
+        // ========== Dijkstra ==========
+        System.out.println("\n=== Dijkstra from Almaty ===");
+        DijkstraSearch<String> dijkstra = new DijkstraSearch<>(graph, almaty);
 
-        // test get
-        MyTestingClass testKey = new MyTestingClass(5, "name5");
-        System.out.println("Get test value: " + table.get(testKey));
+        List<Vertex<String>> dijkstraPath = dijkstra.pathTo(atyrau);
+        if (dijkstraPath != null) {
+            System.out.print("Shortest path to Atyrau: ");
+            for (Vertex<String> v : dijkstraPath) {
+                System.out.print(v + " ");
+            }
+            System.out.println();
+            System.out.println("Total distance: " + dijkstra.distanceTo(atyrau) + " km");
+        } else {
+            System.out.println("No path found.");
+        }
 
-        System.out.println("Contains value 5: " + table.contains(5));
-
-        System.out.println("GetKey test: " + table.getKey(5));
-
-
+        // Check path to all vertices
+        System.out.println("\n--- Distances from Almaty (Dijkstra) ---");
+        for (Vertex<String> v : graph.getVertices().keySet()) {
+            double dist = dijkstra.distanceTo(v);
+            System.out.println(v + ": " + (dist == Double.MAX_VALUE ? "unreachable" : dist + " km"));
+        }
     }
 }
